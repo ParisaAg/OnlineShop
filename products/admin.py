@@ -1,8 +1,19 @@
 from django.contrib import admin
-from .models import Product
+from .models import Product,Comment
 # Register your models here.
 
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ['title','price','status']
+class CommentInline(admin.TabularInline):
+    model = Comment
+    fields =  ['author','text','status','stars',]
+    extra = 1
 
-admin.site.register(Product,ProductAdmin)
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['title','price','status',]
+    inlines = [CommentInline,]
+
+
+@admin.register(Comment)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['product','author','text','status','stars',]
+
